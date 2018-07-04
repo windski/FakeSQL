@@ -360,6 +360,15 @@ namespace utlis {
             if(used_pairs>=10)
             {
                 cout<<"this node has full"<<endl;
+                leaf_node<key_type,value_type>  * new_leaf_node = new leaf_node<key_type,value_type>(parent_node);
+                //for(vector<key_value_pair<key_type,value_type>>::iterator item=key_value_pairs.end();
+                //        item!=key_value_pairs.end(); item++)
+                for(int i=0;i<5;i++)
+                {
+                    key_value_pair<key_type,value_type> a = key_value_pairs[i];
+                    cout<<a.getkey()<<"a"<<endl;
+                    //new_leaf_node->key_value_pairs.push_back(this->key_value_pairs.pop_back());
+                }
                 return 0;  //该叶子节点已满,插入失败
             } else
             {
