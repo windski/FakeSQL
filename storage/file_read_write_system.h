@@ -12,8 +12,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <iostream>
-#include "bson_.h"
-#include "bson.h"
+//#include "bson_.h"
+//#include "bson.h"
 namespace utils
 {
 
@@ -30,7 +30,7 @@ namespace utils
     public:
         basic_read_write(char * namepath);
         ~basic_read_write();
-        off64_t write_bsonCouple(bson_::bson_couple *bsonCouple_,uint8_t *bsonBuf);
+        off64_t write_bsonCouple(uint8_t *bsonBuf);
          std::shared_ptr<uint8_t > read_bsonCouple(off64_t seek);
     };
 }

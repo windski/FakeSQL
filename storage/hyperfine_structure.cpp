@@ -18,7 +18,7 @@
 #ifndef HYPERFINE_STRUCTURE_HPP
 #define HYPERFINE_STRUCTURE_HPP
 
-//#include "ast.h"
+#include "commons.h"
 #include <vector>
 #include <string>
 #include "map"
@@ -90,7 +90,7 @@ namespace Quantum {
          * 但他们不是简单的直接这样使用,它们在枚举里面的名字是有TS前缀的...比如`TS_SELECT'. `TS_CREATE'
          * `TS' 前缀意思是 test, 没啥特别含义...后面可能会改掉..
          */
-        //enum OprtType opType_;
+        enum OprtType opType_;
 
         // 表名, 数据库名字直接给你应该就好了.这个没有什么特别的讲究,
         std::vector<struct TableName> tableListRef_;

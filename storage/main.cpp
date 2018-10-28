@@ -1,140 +1,49 @@
+#include <iostream>   // std::cout
+#include <string>     // std::string, std::stoi
 
+//
 #include <iostream>
 #include "vector"
 #include "memory"
 #include "B-tree-initial.hpp"
 #include "file_read_write_system.h"
+#include "B_tree_initial_without_templete.h"
 #include <random>
-#include <bson.h>
-#include <bson-types.h>
-#include "bson_.h"
-using namespace utils;
+//#include <bson.h>
+//#include <bson-types.h>
+//#include "bson_.h"
+using namespace std;
 
-//static bool
-//my_visit_before (const bson_iter_t *iter, const char *key, void *data)
-//{
-//    int *count = (int *) data;
-//
-//    (*count)++;
-//
-//    /* returning true stops further iteration of the document */
-//
-//    return false;
-//}
-//
-//static void
-//count_fields (bson_t *doc)
-//{
-//    bson_visitor_t visitor = {0};
-//    bson_iter_t iter;
-//    int count = 0;
-//
-//    visitor.visit_before = my_visit_before;
-//
-//    if (bson_iter_init (&iter, doc)) {
-//        bson_iter_visit_all (&iter, &visitor, &count);
-//    }
-//
-//    printf ("Found %d fields.\n", count);
-//}
 
 
 int main() {
 
-    basic_read_write    bs("./test.txt");
+    string a = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
+//    string b = "ab";
+//    if (a > b) cout << 1 << endl;
+//    else cout << 0 << endl;
+////    return 0;
+////    cout<<"a:"<<(a<b)<<endl;
 
-    bson_::bson_couple b;
+    utils::Manager manager("1");
+    for (int i = 0; i < a.length(); i++) {
 
-    b.insert_UTF8_value("111", "222");
-    b.insert_int32_value("1111", 683);
-    uint8_t  *buf;
-    buf = b.getBsonBuf();
-    //b.rebuildFromBuffer(buf);
-    bs.write_bsonCouple(&b,b.getBsonBuf());
-    std::shared_ptr<uint8_t > bufPtr;
-    bufPtr = bs.read_bsonCouple(1008);
-    b.rebuildFromBuffer(bufPtr.get());
+        string p(1,a[i]);
+        cout<<p<<i<<endl;
+        manager.insert_data(p,i);
+    }
 
+    for (int i = 0; i < a.length(); i++) {
+        if(i%1000==0)
+            cout<<i<<endl;
+        string p(1,a[i]);
+        manager.data_search(p);
+    }
 
-
-
-//    bs.write_bsonCouple(&b2,b2.getBsonBuf());
-//    bs.write_bsonCouple(&b,b.getBsonBuf());
-//    bson_writer_t *writer;
-//    uint8_t *buf = NULL;
-//    size_t buflen = 0;
-//    bson_t *doc = bson_new();
-//
-//    writer = bson_writer_new (&buf, &buflen, 0, bson_realloc_ctx, NULL);
-//    int i;
-//
-//    for (i = 0; i < 10; i++) {
-//        //bson_append_int32(doc,"i",-1,i);
-//        bson_writer_begin (writer, &doc);
-//
-//        bson_append_utf8(doc,"a",-1,"b",-1);
-//        //cout<<bson_writer_get_length(writer)<<endl;
-//        bson_writer_end(writer);
-//
-//    }
-////    bson_writer_end (writer);
-//
-//    //count_fields(doc);
-//
-//    cout<<bson_writer_get_length(writer)<<endl;
-//
-//
-//    bson_reader_t *reader = bson_reader_new_from_data(buf,120);
-//    const bson_t *b;
-//    char *str;
-//    while ((b = bson_reader_read (reader, NULL))) {
-//        str = bson_as_canonical_extended_json (b, NULL);
-//        fprintf (stdout, "%s\n", str);
-//        bson_free (str);
-//    }
+    int c;
 }
-////    bson_t b=BSON_INITIALIZER;
-////    //char a[] ="ad";
-////    bson_append_utf8 (&b, "key", -1,"123", -1);
-////    bson_append_utf8 (&b, "key23", -1, "value2", -1);
-////    //cout<<b['key'];
-////    int avf;
-////
-////    //bson_t *b;
-////    bson_iter_t iter;
-////
-////    //if ((b = bson_new_from_data (my_data, my_data_len)))
-////    {
-////        const bson_value_t *value;
-////        if (bson_iter_init (&iter, &b)) {
-////            while (bson_iter_next (&iter)) {
-////                printf ("Found element key: \"%s\"\n", bson_iter_key (&iter));
-////                value  = bson_iter_value(&iter);
-////                cout<<value->value.v_utf8.str;
-////            }
-////        }
-////        bson_destroy (&b);
-////    }
-//
-//
-//
-////    Manager<int, int> manager(-2147483648);
-////
-////    for(int i=0;i<100000;i++) {
-////        if (i % 1000 == 0)
-////            cout << i << endl;
-////        manager.insert_data(i, i);
-////    }
-////
-//
-////
-////    for (int i=0;i<50;i++)
-////        manager.data_search(i);
-////    basic_read_write testfile("../test.tfrecord");
-////    int a;
-////    testfile.insert_value("jtsghrz");
-//
-//
+
+
 //
 //
 //

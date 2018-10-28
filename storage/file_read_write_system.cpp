@@ -46,7 +46,7 @@ basic_read_write::~basic_read_write()
     ::close(fd);
 };
 
-off64_t basic_read_write::write_bsonCouple(bson_::bson_couple *bsonCouple_,uint8_t *bsonBuf) {
+off64_t basic_read_write::write_bsonCouple(uint8_t *bsonBuf) {
     pwrite(fd,bsonBuf,500,this->nowSeek);
     off64_t  tempSeek_ = nowSeek;
     nowSeek+=500;
