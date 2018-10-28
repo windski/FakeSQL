@@ -112,7 +112,6 @@ struct _SqlOpts;
 struct _DefOpts;
 struct _ExprVarCon;
 struct _DelSetceOpts;
-struct _Express;
 
 struct _OprtNode
 {
@@ -201,8 +200,6 @@ struct _TablList {
 struct _DelSetceOpts {
     uint8_t optsDel_;       // 标志诸如`QUICK', `LOW PRIORITY' 等选项..
 
-    // opt_where
-    struct _Express;
     // opt_limit
 };
 

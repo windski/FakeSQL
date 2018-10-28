@@ -19,7 +19,7 @@ INCLUDE_DIRECTORIES(net)
 SET(NETSRC net/socket.hpp net/socket.cpp
         net/netutils.hpp net/netutils.cpp
         net/epoller.hpp net/epoller.cpp
-        net/thread_loop.hpp net/thread_loop.cpp)
+        net/thread_loop.hpp net/thread_loop.cpp trans_para.h)
 
 ADD_EXECUTABLE(FakeSQL
         main.cpp commons.h
@@ -30,6 +30,6 @@ ADD_EXECUTABLE(FakeSQL
         hyperfine_structure.hpp
 
         ${NETSRC}
-        )
+        trans_para.cpp)
 
 set(CMAKE_CXX_STANDARD 11)

@@ -21,12 +21,11 @@ typedef struct {
         int fileno;
     } src;
 
-    ast_node_sexp* node;
     struct _OprtNode *root;
 } module;
 
 
-module* new_module_from_string(char* src);
+module* new_module_from_string(const char* src);
 
 void delete_module(module* mod);
 

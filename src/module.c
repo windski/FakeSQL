@@ -11,10 +11,11 @@ extern "C" {
 #endif
 
 
-module *new_module_from_string(char *src)
+module *new_module_from_string(const char *src)
 {
     module *mod = (module *) malloc(sizeof(module));
-    mod->src.filefp = fmemopen(src, strlen(src) + 1, "r");
+    // remove the const property
+    mod->src.filefp = fmemopen((char *)src, strlen(src) + 1, "r");
     return mod;
 }
 
@@ -41,9 +42,6 @@ int parse_module(module* mod)
     res = yyparse(sc, mod);
     yylex_destroy(sc);
 
-//    if(res == 0) {
-//        print_node_sexp(mod->root);
-//    }
 
     return res;
 }
