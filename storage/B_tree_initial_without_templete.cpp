@@ -60,7 +60,7 @@ namespace  utils{
 
                 if(!whether_initialed)
                     throw(-1);
-                middle_node_t * temp_node =root;
+                middle_node * temp_node =root;
                 points_struct *  point  = new points_struct;
 
                 point = temp_node->searchkey(key);//#
@@ -176,9 +176,15 @@ namespace  utils{
             }
         }
 
+    Manager::~Manager() {
+        cout<<"~Manager--->>";//<<endl;
+        //delete root;
+
+        cout<<"delete succeed"<<endl;
+    }
 
 
-    };
+};
 
 
 

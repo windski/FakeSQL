@@ -338,6 +338,15 @@ namespace  utils{
                       key_value_pair_for_middle_node_which_next_node_is_leaf_node_t.end());
     }
 
+    middle_node::~middle_node() {
+
+        cout<<"delete middle_node --->>";
+        delete parent_node;
+        //delete manager;
+        cout<<"delete succeed"<<endl;
+
+    }
+
 
 
 
@@ -346,7 +355,8 @@ namespace  utils{
     ///////下面是叶子节点类
 
 
-    leaf_node::leaf_node(middle_node * parent_node,
+    leaf_node::
+    leaf_node(middle_node * parent_node,
                          leaf_node * brother_node):parent_node(parent_node),brother_node(brother_node)
     {
         used_pairs=0;
@@ -466,7 +476,7 @@ namespace  utils{
         leaf_node * new_leaf_node = new leaf_node();
         //parent_node->insert()
         //new_leaf_node->insert(key,value);
-        for(int i=0;i<5;i++)
+        for(int i=0;i<8;i++)
         {
 
 
@@ -485,7 +495,7 @@ namespace  utils{
 
 
         middle_node *new_middle_node = new middle_node();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 8; i++) {
             new_middle_node->insert(middle_node1->get_key(), middle_node1->get_value_of_leaf_node());
             middle_node1->delete_pair();
         }
@@ -498,7 +508,7 @@ namespace  utils{
     {
 
         middle_node * new_middle_node = new middle_node;
-        for(int i=0;i<5;i++)
+        for(int i=0;i<8;i++)
         {
             new_middle_node->insert(middle_node1->get_key(),middle_node1->get_value_of_middle_node());
             middle_node1->delete_pair();
@@ -521,11 +531,27 @@ namespace  utils{
         return s1.key<s2.key;
     }
 
+    leaf_node::~leaf_node() {
+
+        cout<<"delete leaf_node---->>";
+
+//        delete brother_node;
+        cout<<"delete succeed"<<endl;
+
+    }
+
 
     //template <typename key_type,typename value_type>                        //中间节点内的用于sort的友元函数
     bool operator< ( key_value_pair_for_middle_node  &s1, key_value_pair_for_middle_node  &s2)
     {
         return s1.key<s2.key;
+    }
+
+    key_value_pair_for_middle_node::~key_value_pair_for_middle_node() {
+
+        cout<<"delete key_value_pair_for_middle_node---->>";
+        //delete value;
+        cout<<"delete succeed"<<endl;
     }
 
     //template <typename key_type,typename value_type>                     //下一个节点是叶子节点的中间节点的用于sort的友元函数
@@ -535,6 +561,13 @@ namespace  utils{
         return s1.key<s2.key;
     }
 
+    key_value_pair_for_middle_node_which_next_node_is_leaf_node::~key_value_pair_for_middle_node_which_next_node_is_leaf_node() {
+
+        cout<<"delete key_value_pair_for_middle_node_which_next_node_is_leaf_node --->>";
+        //delete value;
+        cout<<"delete succeed"<<endl;
+
+    }
 
 
 }

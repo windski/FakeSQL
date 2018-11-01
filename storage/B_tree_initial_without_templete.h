@@ -16,7 +16,7 @@ namespace utils {
 
     class Manager {
     private:
-        typedef middle_node middle_node_t;
+        //typedef middle_node middle_node_t;
 
         int whether_initialed = 0;
         middle_node *root;
@@ -24,7 +24,7 @@ namespace utils {
 
     public:
         Manager(string key);
-
+        ~Manager();
         void update_root(middle_node *newroot);
 
         void updata();

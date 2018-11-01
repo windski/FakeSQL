@@ -9,38 +9,45 @@
 #include "file_read_write_system.h"
 #include "B_tree_initial_without_templete.h"
 #include <random>
-//#include <bson.h>
+#include <bson.h>
 //#include <bson-types.h>
 //#include "bson_.h"
+#include "errno.h"
+#include "unistd.h"
 using namespace std;
 
 
 
 int main() {
 
-    string a = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
-//    string b = "ab";
-//    if (a > b) cout << 1 << endl;
-//    else cout << 0 << endl;
-////    return 0;
-////    cout<<"a:"<<(a<b)<<endl;
+//
+//    int fd =open("./dfsa",O_RDONLY);
+//    perror("open");
+//    cout<<strerror(errno);
 
+
+//    string a = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
+////    string b = "ab";
+////    if (a > b) cout << 1 << endl;
+////    else cout << 0 << endl;
+//////    return 0;
+//////    cout<<"a:"<<(a<b)<<endl;
+//
     utils::Manager manager("1");
-    for (int i = 0; i < a.length(); i++) {
+    for (int i = 0; i < 640; i++) {
 
-        string p(1,a[i]);
-        cout<<p<<i<<endl;
-        manager.insert_data(p,i);
+        manager.insert_data(to_string(i),i);
+
     }
 
-    for (int i = 0; i < a.length(); i++) {
-        if(i%1000==0)
+    for (int i = 0; i < 640; i++) {
+        if(i%10==0)
             cout<<i<<endl;
-        string p(1,a[i]);
-        manager.data_search(p);
+
+        manager.data_search(to_string(i));
     }
 
-    int c;
+//    int c;
 }
 
 

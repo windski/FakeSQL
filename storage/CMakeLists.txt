@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.6)
 project(the_new_fake_sql)
 
 find_package(libbson-1.0)

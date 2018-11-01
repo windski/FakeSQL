@@ -22,6 +22,8 @@ namespace utils {
     public:
         key_value_pair_for_middle_node(std::string key=NULL,middle_node *value=NULL);
 
+        ~key_value_pair_for_middle_node();
+
         string getkey(void){ return key;};
 
         middle_node * getvalue(void){ return  value;}
@@ -51,6 +53,8 @@ namespace utils {
 
         key_value_pair_for_middle_node_which_next_node_is_leaf_node
                 (string key=NULL,leaf_node *value = NULL);
+
+        ~key_value_pair_for_middle_node_which_next_node_is_leaf_node();
 
         string getkey(void){
             return key;
@@ -90,6 +94,8 @@ namespace utils {
 
     public:
         middle_node(middle_node * parent_node_ = nullptr){}
+
+        ~middle_node();
 
         void set_manager(Manager * manager);
 
@@ -162,6 +168,7 @@ namespace utils {
         leaf_node(middle_node * parent_node= nullptr,
                   leaf_node * brother_node = nullptr);
 
+        ~leaf_node();
 
         string pop_key(int flag=0);
 
