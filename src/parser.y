@@ -404,19 +404,19 @@ static struct _DataType newDataTypeNode()
 %token FDATE_ADD FDATE_SUB
 %token FCOUNT
 
-%type <oprtNode_p> create_table_stmt insert_stmt delete_stmt
+%type <oprtNode_p> create_table_stmt insert_stmt
 %type <defOpts_p> create_col_list create_definition
 %type <colList_p> column_list opt_col_names
-%type <uintval8> opt_binary opt_uz insert_opts delete_opts
+%type <uintval8> opt_binary opt_uz insert_opts
 %type <dataType_t> data_type
 %type <uintval64> opt_length
 %type <intval> column_atts
-%type <tablList_p> table_references table_reference table_factor
+/* %type <tablList_p> table_references table_reference table_factor */
 %type <exprVar_p> expr
 %type <exprVarCon_p> insert_vals insert_vals_list
-%type <strval> opt_as_alias
+/* %type <strval> opt_as_alias */
 
-%type <intval> opt_for_join
+/* %type <intval> opt_for_join */
 /* emmmm, 未使用的规则的类型声明... */
 %type <intval> opt_ondupupdate insert_asgn_list
 
@@ -614,27 +614,27 @@ column_list: NAME
 /*  */
 /* select_expr: expr opt_as_alias ; */
 
-table_references: table_reference           { $$ = $1; }
-    | table_references ',' table_reference  { $1->next = $3; $$ = $1; }
-    ;
-
-table_reference: table_factor               { $$ = $1; }
-    ;
-
-table_factor: NAME opt_as_alias index_hint  { emit("TABLE %s", $1); free($1); }
-    | NAME '.' NAME opt_as_alias index_hint { emit("TABLE %s.%s", $1, $3); free($1); free($3); }
-    | table_subquery opt_as NAME            { emit("SUBQUERYAS %s", $3); free($3); }
-    | '(' table_references ')'              { emit("TABLEREFERENCES %d", $2); }
-    ;
-
-/* opt_as: AS */
-    /* | [> nil <] */
-    /* ; */
-
-opt_as_alias: AS NAME   { $$ = $1; free($2); }
-    | NAME              { $$ = $1; free($1); }
-    | /* nil */
-    ;
+/* table_references: table_reference           { $$ = $1; }
+ *     | table_references ',' table_reference  { $1->next = $3; $$ = $1; }
+ *     ;
+ *
+ * table_reference: table_factor               { $$ = $1; }
+ *     ;
+ *
+ * table_factor: NAME opt_as_alias index_hint  { emit("TABLE %s", $1); free($1); }
+ *     | NAME '.' NAME opt_as_alias index_hint { emit("TABLE %s.%s", $1, $3); free($1); free($3); }
+ *     | table_subquery opt_as NAME            { emit("SUBQUERYAS %s", $3); free($3); }
+ *     | '(' table_references ')'              { emit("TABLEREFERENCES %d", $2); }
+ *     ;
+ *
+ * [> opt_as: AS <]
+ *     [> | [> nil <] <]
+ *     [> ; <]
+ *
+ * opt_as_alias: AS NAME   { $$ = $1; free($2); }
+ *     | NAME              { $$ = $1; free($1); }
+ *     | [> nil <]
+ *     ; */
 
 /* join_table: table_reference opt_inner_cross JOIN table_factor opt_join_condition */
                   /* { emit("JOIN %d", 0100+$2); } */
@@ -674,22 +674,22 @@ opt_as_alias: AS NAME   { $$ = $1; free($2); }
     /* | USING '(' column_list ')' { emit("USING %d", $3); } */
     /* ; */
 
-index_hint: USE KEY opt_for_join '(' index_list ')'
-                  { emit("INDEXHINT %d %d", $5, 010+$3); }
-    | IGNORE KEY opt_for_join '(' index_list ')'
-                  { emit("INDEXHINT %d %d", $5, 020+$3); }
-    | FORCE KEY opt_for_join '(' index_list ')'
-                  { emit("INDEXHINT %d %d", $5, 030+$3); }
-    | /* nil */
-    ;
-
-opt_for_join: FOR JOIN { $$ = 1; }
-    | /* nil */        { $$ = 0; }
-    ;
-
-index_list: NAME  { emit("INDEX %s", $1); free($1); $$ = 1; }
-    | index_list ',' NAME { emit("INDEX %s", $3); free($3); $$ = $1 + 1; }
-    ;
+/* index_hint: USE KEY opt_for_join '(' index_list ')'
+ *                   { emit("INDEXHINT %d %d", $5, 010+$3); }
+ *     | IGNORE KEY opt_for_join '(' index_list ')'
+ *                   { emit("INDEXHINT %d %d", $5, 020+$3); }
+ *     | FORCE KEY opt_for_join '(' index_list ')'
+ *                   { emit("INDEXHINT %d %d", $5, 030+$3); }
+ *     | [> nil <]
+ *     ;
+ *
+ * opt_for_join: FOR JOIN { $$ = 1; }
+ *     | [> nil <]        { $$ = 0; }
+ *     ;
+ *
+ * index_list: NAME  { emit("INDEX %s", $1); free($1); $$ = 1; }
+ *     | index_list ',' NAME { emit("INDEX %s", $3); free($3); $$ = $1 + 1; }
+ *     ; */
 
 /* table_subquery: '(' select_stmt ')' { emit("SUBQUERY"); } */
     /* ; */
@@ -697,43 +697,43 @@ index_list: NAME  { emit("INDEX %s", $1); free($1); $$ = 1; }
 /*  */
     /* delete statement */
 
-stmt: delete_stmt { mod->root = $1; }
-    ;
-
-delete_stmt: DELETE delete_opts FROM NAME opt_where opt_limit
-            {
-                struct _OprtNode *root = new_oprt_node(TS_DELETE);
-                struct _TablList *table = new_tabl_list($4, NULL);
-                struct _SqlOpts *opts = new_SqlOpts_node();
-                opts->options_->delOpts_ = $2;
-
-                root->table_ = table;
-                free($4);
-                $$ = root;
-            }
-    ;
-
-delete_opts: delete_opts LOW_PRIORITY { $$ = $1 | __SqlDelOpt_LOWPRI; }
-    | delete_opts QUICK { $$ = $1 | __SqlDelOpt_QUICK; }
-    | delete_opts IGNORE { $$ = $1 | __SqlDelOpt_IGNORE; }
-    | /* nil */ { $$ = 0; }
-    ;
-
-delete_stmt: DELETE delete_opts delete_list
-    FROM table_references opt_where
-    {
-        struct _OprtNode *root = new_oprt_node(TS_DELETE);
-        struct _TablList *table = $5;
-        struct _SqlOpts *opts = new_SqlOpts_node();
-        emit("DELETEMULTI %d %d %d", $2, $3, $5);
-    }
-
-delete_list: NAME opt_dot_star { emit("TABLE %s", $1); free($1); $$ = 1; }
-    | delete_list ',' NAME opt_dot_star { emit("TABLE %s", $3); free($3); $$ = $1 + 1; }
-    ;
-
-opt_dot_star: /* nil */ | '.' '*'
-    ;
+/* stmt: delete_stmt { mod->root = $1; }
+ *     ;
+ *
+ * delete_stmt: DELETE delete_opts FROM NAME opt_where opt_limit
+ *             {
+ *                 struct _OprtNode *root = new_oprt_node(TS_DELETE);
+ *                 struct _TablList *table = new_tabl_list($4, NULL);
+ *                 struct _SqlOpts *opts = new_SqlOpts_node();
+ *                 opts->options_->delOpts_ = $2;
+ *
+ *                 root->table_ = table;
+ *                 free($4);
+ *                 $$ = root;
+ *             }
+ *     ;
+ *
+ * delete_opts: delete_opts LOW_PRIORITY { $$ = $1 | __SqlDelOpt_LOWPRI; }
+ *     | delete_opts QUICK { $$ = $1 | __SqlDelOpt_QUICK; }
+ *     | delete_opts IGNORE { $$ = $1 | __SqlDelOpt_IGNORE; }
+ *     | [> nil <] { $$ = 0; }
+ *     ;
+ *
+ * delete_stmt: DELETE delete_opts delete_list
+ *     FROM table_references opt_where
+ *     {
+ *         struct _OprtNode *root = new_oprt_node(TS_DELETE);
+ *         struct _TablList *table = $5;
+ *         struct _SqlOpts *opts = new_SqlOpts_node();
+ *         emit("DELETEMULTI %d %d %d", $2, $3, $5);
+ *     }
+ *
+ * delete_list: NAME opt_dot_star { emit("TABLE %s", $1); free($1); $$ = 1; }
+ *     | delete_list ',' NAME opt_dot_star { emit("TABLE %s", $3); free($3); $$ = $1 + 1; }
+ *     ;
+ *
+ * opt_dot_star: [> nil <] | '.' '*'
+ *     ; */
 
 /* delete_stmt: DELETE delete_opts FROM delete_list USING table_references opt_where
  *             { emit("DELETEMULTI %d %d %d", $2, $4, $6); }
@@ -772,7 +772,7 @@ insert_opts: /* nil */          { $$ = 0; }
     | insert_opts IGNORE        { $$ = $1 | __SqlInsOpt_IGNORE; }
     ;
 
-opt_col_names: /* nil */
+opt_col_names: /* nil */  { $$ = NULL; }
     | '(' column_list ')' { $$ = $2; }
     ;
 
@@ -896,7 +896,7 @@ expr: NAME
         char buf[16];
         bzero(buf, sizeof(buf));
         sprintf(buf, "%d", $1);
-        strncpy(tmp->data_, buf, strlen(buf);
+        strncpy(tmp->data_, buf, strlen(buf));
         tmp->type_ = __Sql_ExprINTNUM;
         $$ = tmp;
     }
@@ -905,7 +905,7 @@ expr: NAME
         struct _ExprVar *tmp = new_Expr_node();
         char buf[2];
         bzero(buf, sizeof(buf));
-        sptrintf(buf, "%d", $1);
+        sprintf(buf, "%d", $1);
         strncpy(tmp->data_, buf, strlen(buf));
         tmp->type_ = __Sql_ExprBOOL;
         $$ = tmp;
@@ -999,13 +999,13 @@ expr: expr '+' expr
     | NOT expr
         {
             struct _ExprVar *tmp = new_Expr_node();
-            setExprVar(tmp, $1, NULL, __Sql_ExprNOT);
+            setExprVar(tmp, $2, NULL, __Sql_ExprNOT);
             $$ = tmp;
         }
     | '!' expr
         {
             struct _ExprVar *tmp = new_Expr_node();
-            setExprVar(tmp, $1, NULL, __Sql_ExprNOT);
+            setExprVar(tmp, $2, NULL, __Sql_ExprNOT);
             $$ = tmp;
         }
     | USERVAR ASSIGN expr

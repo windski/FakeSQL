@@ -2,18 +2,6 @@
 // Created by falleuion on 10/1/18.
 //
 
-/** LOOK AT HERE!!!
- * 关于命名方法,还是使用驼峰命名法吧...不过有些地方必须统一一下;
- *      1. 对于结构体, 枚举, 联合, 类名等..都应该全部单词的首字母大写;
- *      2. 对于内部调用的 结构, 枚举, 联合, 类名等, 都应该在声明之前加下划线! ;
- *      3. 对于变量的命名: 第一个单词不用大写, 后面的所有单词都要首字母大写, 而且必须再在变量的后面加下划线.
- *      4. 对于 `typedef' 如果取别名的是一个结构,除了上面的规则还应该在最后加上 `_t' 表示是一种类型. 比如'HyperFineStruct_t'
- *          如果取别名后是指针, 就加上`_p' 表示是指针. 比如'FooStructPoint_p'
- *      5. 还没想好,以后再说
- *
- * 2, 3规定只针对`struct' or `class' 的变量
- */
-
 
 #ifndef HYPERFINE_STRUCTURE_HPP
 #define HYPERFINE_STRUCTURE_HPP
