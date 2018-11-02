@@ -5,9 +5,9 @@
 #include <iostream>
 #include "vector"
 #include "memory"
-#include "B-tree-initial.hpp"
+//#include "B-tree-initial.hpp"
 #include "file_read_write_system.h"
-#include "B_tree_initial_without_templete.h"
+#include "B_tree_initial_without_templete2.h"
 #include <random>
 #include <bson.h>
 //#include <bson-types.h>
@@ -41,7 +41,7 @@ int main() {
     }
 
     for (int i = 0; i < 640; i++) {
-        if(i%10==0)
+        if(i%1000==0)
             cout<<i<<endl;
 
         manager.data_search(to_string(i));

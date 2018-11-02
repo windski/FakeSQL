@@ -4,6 +4,7 @@
 
 #include "interfaceManager.h"
 #include "pub_friends.hpp"
+
 utils::InterfaceManager::~InterfaceManager() {
     delete BTreeManager;
     delete BasicReadWrite;
