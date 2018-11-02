@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include "B_tree_nodes_without_templete2.h"
+#include "hyperfine_structure.cpp"
 #include <cassert>
 #include <memory>
 

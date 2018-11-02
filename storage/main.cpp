@@ -34,14 +34,14 @@ int main() {
 //////    cout<<"a:"<<(a<b)<<endl;
 //
     utils::Manager manager("1");
-    for (int i = 0; i < 640; i++) {
+    for (int i = 0; i < 64; i++) {
 
         manager.insert_data(to_string(i),i);
 
     }
 
-    for (int i = 0; i < 640; i++) {
-        if(i%1000==0)
+    for (int i = 0; i < 64; i++) {
+        if(i%10==0)
             cout<<i<<endl;
 
         manager.data_search(to_string(i));
