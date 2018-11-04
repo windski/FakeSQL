@@ -7,7 +7,7 @@
 #include "memory"
 //#include "B-tree-initial.hpp"
 #include "file_read_write_system.h"
-#include "B_tree_initial_without_templete2.h"
+#include "B_tree_initial_without_templete.h"
 #include <random>
 #include <bson.h>
 //#include <bson-types.h>
@@ -34,13 +34,21 @@ int main() {
 //////    cout<<"a:"<<(a<b)<<endl;
 //
     utils::Manager manager("1");
+<<<<<<< HEAD
     for (int i = 0; i < 6; i++) {
+=======
+    for (int i = 0; i < 6400; i++) {
+>>>>>>> eb5d86a0c1edf86d6cc0d9e1295e6b1a758b7b27
 
         manager.insert_data(to_string(i),i);
 
     }
 
+<<<<<<< HEAD
     for (int i = 0; i < 6; i++) {
+=======
+    for (int i = 0; i < 6400; i++) {
+>>>>>>> eb5d86a0c1edf86d6cc0d9e1295e6b1a758b7b27
         if(i%10==0)
             cout<<i<<endl;
 

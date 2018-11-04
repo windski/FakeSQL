@@ -1,3 +1,0 @@
-/home/yurunyang/Desktop/the_new_fake_sql/storage/build/CMakeFiles/rebuild_cache.dir
-/home/yurunyang/Desktop/the_new_fake_sql/storage/build/CMakeFiles/edit_cache.dir
-/home/yurunyang/Desktop/the_new_fake_sql/storage/build/CMakeFiles/the_new_fake_sql.dir
