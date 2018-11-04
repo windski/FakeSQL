@@ -73,13 +73,16 @@ static Position FindSibling(Position Parent,int i){
     Limit = M;
     
     Sibling = NULL;
-    if (i == 0){
+    if (i == 0) {
         if (Parent->Children[1]->KeyNum < Limit)
             Sibling = Parent->Children[1];
-    }
-    else if (Parent->Children[i - 1]->KeyNum < Limit)
+
+    } else if (Parent->Children[i - 1]->KeyNum < Limit) {
         Sibling = Parent->Children[i - 1];
-    else if (i + 1 < Parent->KeyNum && Parent->Children[i + 1]->KeyNum < Limit){
+
+    } else if (i + 1 < Parent->KeyNum &&
+            Parent->Children[i + 1]->KeyNum < Limit) {
+
         Sibling = Parent->Children[i + 1];
     }
     
@@ -94,18 +97,19 @@ static Position FindSiblingKeyNum_M_2(Position Parent,int i,int *j){
     
     Limit = LIMIT_M_2;
     
-    if (i == 0){
-        if (Parent->Children[1]->KeyNum > Limit){
+    if (i == 0) {
+        if (Parent->Children[1]->KeyNum > Limit) {
             Sibling = Parent->Children[1];
             *j = 1;
         }
-    }
-    else{
-        if (Parent->Children[i - 1]->KeyNum > Limit){
+    } else {
+        if (Parent->Children[i - 1]->KeyNum > Limit) {
             Sibling = Parent->Children[i - 1];
             *j = i - 1;
-        }
-        else if (i + 1 < Parent->KeyNum && Parent->Children[i + 1]->KeyNum > Limit){
+        
+        } else if (i + 1 < Parent->KeyNum &&
+                Parent->Children[i + 1]->KeyNum > Limit) {
+
             Sibling = Parent->Children[i + 1];
             *j = i + 1;
         }
@@ -121,18 +125,17 @@ static Position FindSiblingKeyNum_M_2(Position Parent,int i,int *j){
 static Position InsertElement(int isKey, Position Parent,Position X,KeyType Key,ValueType  value ,int i,int j){
     
     int k;
-    if (isKey){
+    if (isKey) {
         /* 插入key */
         k = X->KeyNum - 1;
-        while (k >= j){
+        while (k >= j) {
             X->Key[k + 1] = X->Key[k];
-            X->Value[k+1] = X->Value[k];
+            X->Value[k + 1] = X->Value[k];
             k--;
         }
-        
+
         X->Key[j] = Key;
         X->Value[j]=value;
-
 
         if (Parent != NULL)
         {
@@ -143,7 +146,7 @@ static Position InsertElement(int isKey, Position Parent,Position X,KeyType Key,
         
         X->KeyNum++;
         
-    }else{
+    } else {
         /* 插入节点 */
         
         /* 对树叶节点进行连接 */
@@ -303,15 +306,21 @@ static BPlusTree SplitNode(Position Parent,Position X,int i){
         }
         NewNode->Key[k] = X->Key[j];
         NewNode->Value[k] = X->Value[j];
+        
         X->Key[j] = Unavailable;
         X->Value[j] = Unavailable;
-        NewNode->KeyNum++;X->KeyNum--;
-        j++;k++;
+        
+        NewNode->KeyNum++;
+        
+        X->KeyNum--;
+        
+        j++;
+        k++;
     }
     
-    if (Parent != NULL)
+    if (Parent != NULL) {
         InsertElement(0, Parent, NewNode, Unavailable,Unavailable, i + 1, Unavailable);
-    else{
+    } else {
         /* 如果是X是根，那么创建新的根并返回 */
         Parent = MallocNewNode();
         InsertElement(0, Parent, X, Unavailable,Unavailable, 0, Unavailable);
@@ -344,19 +353,23 @@ static Position MergeNode(Position Parent, Position X,Position S,int i){
     return Parent;
 }
 
-static BPlusTree RecursiveInsert(BPlusTree T,KeyType Key,ValueType  value ,int i,BPlusTree Parent){
+static BPlusTree RecursiveInsert(BPlusTree T, KeyType Key, ValueType value, int i,BPlusTree Parent)
+{
     int j,Limit;
     Position Sibling;
     
     /* 查找分支 */
     j = 0;
-    while (j < T->KeyNum && Key >= T->Key[j]){
+    while (j < T->KeyNum && Key >= T->Key[j]) {
         /* 重复值不插入 */
         if (Key == T->Key[j])
             return T;
         j++;
     }
-    if (j!= 0 && T->Children[0] != NULL) j--;        // why j--??
+
+    if (j!= 0 && T->Children[0] != NULL) {
+        j--;        // why j--??
+    }
     
     /* 树叶 */
     if (T->Children[0] == NULL)
@@ -503,17 +516,20 @@ extern BPlusTree Destroy(BPlusTree T){
 
 static void RecursiveTravel(BPlusTree T,int Level){
     int i;
-    if (T != NULL){
+    if (T != NULL) {
         printf("  ");
         printf("[Level:%d]-->",Level);
         printf("(");
         i = 0;
-        while (i < T->KeyNum)/*  T->Key[i] != Unavailable*/
+        while (i < T->KeyNum) {
+            /*  T->Key[i] != Unavailable*/
             printf("%d:",T->Key[i++]);
+        }
+
         printf(")");
-        
+
         Level++;
-        
+
         i = 0;
         while (i <= T->KeyNum) {
             RecursiveTravel(T->Children[i], Level);

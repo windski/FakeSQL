@@ -1,5 +1,5 @@
-#ifndef BPlusTree_h
-#define BPlusTree_h
+#ifndef BPLUSTREE_H_
+#define BPLUSTREE_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <assert.h>
 
-#define M (4)
+#define M (10)
 #define LIMIT_M_2 (M % 2 ? (M + 1)/2 : M/2)
 // 下面是内存对齐大小,后面为了调优应该需要改动.
 #ifndef __ALIGN
