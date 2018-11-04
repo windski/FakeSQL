@@ -19,6 +19,8 @@ struct BPlusNode{
     BPlusTree Next;
 };
 
+
+
 /* 初始化 */
 extern BPlusTree Initialize();
 /* 插入 */
@@ -27,6 +29,10 @@ extern BPlusTree Insert(BPlusTree T,KeyType Key,ValueType value);
 extern BPlusTree Remove(BPlusTree T,KeyType Key);
 /* 销毁 */
 extern BPlusTree Destroy(BPlusTree T);
+
+
+/*搜索节点*/
+extern ValueType SearchKey(BPlusTree T,KeyType key);
 /* 遍历节点 */
 extern void Travel(BPlusTree T);
 /* 遍历树叶节点的数据 */

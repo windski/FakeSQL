@@ -519,6 +519,42 @@ static void RecursiveTravel(BPlusTree T,int Level){
     }
 }
 
+ValueType SearchKey(BPlusTree T, KeyType key) {
+    Position Tmp;
+    int i;
+    Tmp = T;
+    while (Tmp->Children[0]!=NULL) {
+
+        for(i=Tmp->KeyNum-1;i>=0;i--)
+        {
+            if(key>=Tmp->Key[i])
+            {
+                Tmp=Tmp->Children[i];
+                break;
+            }
+        }
+    }
+    if(Tmp->Children[0]==NULL)
+    {
+        int j=0;
+        for(j;j<Tmp->KeyNum;j++)
+        {
+            if(key==Tmp->Key[j])
+            {
+                printf("%d\n",Tmp->Value[j]);
+                return Tmp->Value[j];
+            }
+        }
+        printf("NO such key\n");
+        return -1;
+    }
+
+}
+
+
+
+
+
 /* 遍历 */
 extern void Travel(BPlusTree T){
     RecursiveTravel(T, 0);

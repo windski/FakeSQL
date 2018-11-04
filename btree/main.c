@@ -9,9 +9,12 @@ int main(int argc, const char * argv[]) {
     
     clock_t c1 = clock();
     i = 100;
-    for (i=0;i<6400;i++)
+    for (i=0;i<1534;i++)
         T = Insert(T, i,i);
-
+    for(i=1534;i>0;i--)
+    {
+        SearchKey(T,i);
+    }
     
 
     
