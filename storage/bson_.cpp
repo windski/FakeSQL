@@ -3,7 +3,6 @@
 //
 
 #include <iostream>
-#include <cublas_v2.h>
 #include "bson_.h"
 
 #include <cassert>

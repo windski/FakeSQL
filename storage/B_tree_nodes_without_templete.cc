@@ -4,9 +4,9 @@
 
 #include <iostream>
 #include <algorithm>
-#include "B_tree_nodes_without_templete2.h"
-#include "B_tree_initial_without_templete2.h"
-
+#include "B_tree_nodes_without_templete.h"
+#include "B_tree_initial_without_templete.h"
+#include <cstring>
 
 namespace utils {
 
@@ -84,13 +84,10 @@ namespace utils {
     middle_node::updatekey()
     {
         if (flag == 1) {
-
-            std::deque<key_value_pair_for_middle_node_which_next_node_is_leaf_node>::
-                iterator item1 =
-                    key_value_pair_for_middle_node_which_next_node_is_leaf_node_t.begin();
+            auto item1 = kvpair_for_midnode_which_nextnode_is_leafnode.begin();
 
             while (item1 !=
-                    key_value_pair_for_middle_node_which_next_node_is_leaf_node_t.end() - 1) {
+                    kvpair_for_midnode_which_nextnode_is_leafnode.end() - 1) {
 
                 item1->update_key();
                 item1++;
@@ -98,49 +95,41 @@ namespace utils {
 
             sort();
 
-            int stl_size = key_value_pair_for_middle_node_which_next_node_is_leaf_node_t.size();
+            int stl_size = kvpair_for_midnode_which_nextnode_is_leafnode.size();
 
             if (stl_size > 0) {
-                std::deque<key_value_pair_for_middle_node_which_next_node_is_leaf_node>::
-                    iterator item =
-                    key_value_pair_for_middle_node_which_next_node_is_leaf_node_t.end() - 1;
+                auto item =
+                    kvpair_for_midnode_which_nextnode_is_leafnode.end() - 1;
 
                 // 直接把成员属性放在public下...这是c??,那还不如直接写struct...
                 // 已经换成了getkey()
                 this->Maxkey = item->getkey();
                 return Maxkey;
-
             } else {
-                this->Maxkey= std::to_string(-2147483648);
+                this->Maxkey = std::to_string(-2147483648);
                 return std::to_string(-2147483648);
             }
-
         } else {
+            auto item1 = kvpair_for_middle_node.begin();
 
-            std::deque<key_value_pair_for_middle_node>::
-                iterator item1 = key_value_pair_for_middle_node_t.begin();
-
-            while(item1 != key_value_pair_for_middle_node_t.end()) {
+            while(item1 != kvpair_for_middle_node.end()) {
                 Maxkey = item1->update_key();
                 item1++;
             }
 
-            int stl_size = key_value_pair_for_middle_node_t.size();
+            int stl_size = kvpair_for_middle_node.size();
 
             //std::cout<< stl_size <<"   stl_size "<<std::endl;
 
             if (stl_size > 0) {
-                std::deque<key_value_pair_for_middle_node >::iterator item =
-                        key_value_pair_for_middle_node_t.end() - 1;
+                auto item = kvpair_for_middle_node.end() - 1;
                 this->Maxkey = item->getkey();
 
                 return Maxkey;
-
             } else {
                 // return "aaa" ?????
                 return "aaaaaaaaaaaaaa";
             }
-
         }
     }
 
@@ -153,14 +142,14 @@ namespace utils {
             if(front_or_back == 0) {
                 std::deque<key_value_pair_for_middle_node_which_next_node_is_leaf_node>::
                     iterator item =
-                    key_value_pair_for_middle_node_which_next_node_is_leaf_node_t.begin();
+                    kvpair_for_midnode_which_nextnode_is_leafnode.begin();
                 return item->getkey();
             }
 
             if(front_or_back == 1) {
                 std::deque<key_value_pair_for_middle_node_which_next_node_is_leaf_node>::
                     iterator item =
-                    key_value_pair_for_middle_node_which_next_node_is_leaf_node_t.end() - 1;
+                    kvpair_for_midnode_which_nextnode_is_leafnode.end() - 1;
                 return item->getkey();
             }
         }
@@ -168,13 +157,13 @@ namespace utils {
         if(flag == 0) {
             if(front_or_back == 0) {
                 std::deque<key_value_pair_for_middle_node>::
-                    iterator item = key_value_pair_for_middle_node_t.begin();
+                    iterator item = kvpair_for_middle_node.begin();
                 return item->getkey();
             }
             if(front_or_back==1)
             {
                 std::deque<key_value_pair_for_middle_node>::
-                    iterator item = key_value_pair_for_middle_node_t.end() - 1;
+                    iterator item = kvpair_for_middle_node.end() - 1;
                 return item->getkey();
             }
         }
@@ -186,7 +175,7 @@ namespace utils {
     middle_node::get_value_of_middle_node()
     {
         std::deque<key_value_pair_for_middle_node>::
-            iterator item = key_value_pair_for_middle_node_t.begin();
+            iterator item = kvpair_for_middle_node.begin();
         return item->getvalue();
     }
 
@@ -195,7 +184,7 @@ namespace utils {
     {
         std::deque<key_value_pair_for_middle_node_which_next_node_is_leaf_node>::
             iterator iter =
-                key_value_pair_for_middle_node_which_next_node_is_leaf_node_t.begin();
+                kvpair_for_midnode_which_nextnode_is_leafnode.begin();
 
         return iter->getvalue();
     }
@@ -204,63 +193,54 @@ namespace utils {
     void middle_node::delete_pair()
     {
         if (flag == 0) {
-            key_value_pair_for_middle_node_t.pop_front();
+            kvpair_for_middle_node.pop_front();
             used_pairs--;
         } else {
-            key_value_pair_for_middle_node_which_next_node_is_leaf_node_t.pop_front();
+            kvpair_for_midnode_which_nextnode_is_leafnode.pop_front();
             used_pairs--;
         }
     }
 
 
-    points_struct *
+    points_struct
     middle_node::searchkey(std::string key)
     {
-        points_struct * points_struct_t = new points_struct;
+        // TODO:最后没有返回值, 设计有问题, 有个多余的if-else
+        points_struct points;
+        // 在这里直接初始化, 全为0
+        memset(&points, 0, sizeof(points_struct));
 
+        // 找到了, 填写进去返回; 没找到, 直接返回就好
         if(flag == 0) {
-            std::deque<key_value_pair_for_middle_node>::
-                iterator item =
-                    key_value_pair_for_middle_node_t.begin();
+            auto item = kvpair_for_middle_node.begin();
 
-            while(item != key_value_pair_for_middle_node_t.end()) {
+            while(item != kvpair_for_middle_node.end()) {
                 if(item->getkey() >= key) {
-                    points_struct_t->flag = 1;      //找到的是中间节点
-                    points_struct_t->leaf_node_point= nullptr; 
-                    points_struct_t->middle_node_point=item->getvalue();
-                    return points_struct_t;
+                    points.flag = 1;      //找到的是中间节点
+                    points.leaf_node_point= nullptr; 
+                    points.middle_node_point = item->getvalue();
+                    return points;
                 }
-
                 item++;
             }
 
-            points_struct_t->flag = 0;  //没有找到相关节点
-            points_struct_t->middle_node_point = nullptr;
-            points_struct_t->middle_node_point = nullptr;
-            return points_struct_t;
+            return points;
         } else {
-             std::deque<key_value_pair_for_middle_node_which_next_node_is_leaf_node>::
-                iterator item =
-                    key_value_pair_for_middle_node_which_next_node_is_leaf_node_t.begin();
+            auto item = kvpair_for_midnode_which_nextnode_is_leafnode.begin();
 
-            while(key_value_pair_for_middle_node_which_next_node_is_leaf_node_t.end() != 
+            while(kvpair_for_midnode_which_nextnode_is_leafnode.end() != 
                     item) {
                 if(item->getkey() >= key) {
-                    points_struct_t->flag=2; //找到的是叶子节点
-                    points_struct_t->leaf_node_point=item->getvalue();
-                    points_struct_t->middle_node_point = nullptr;
-                    return points_struct_t;
+                    points.flag=2; //找到的是叶子节点
+                    points.leaf_node_point=item->getvalue();
+                    points.middle_node_point = nullptr;
+                    return points;
                 }
-
                 item++;
             }
 
-            points_struct_t->flag = 0;
-            points_struct_t->middle_node_point = nullptr;
-            points_struct_t->middle_node_point = nullptr;
-            return points_struct_t;
+            return points;
         }
-
     }
 
     middle_node *
@@ -270,7 +250,7 @@ namespace utils {
             middle_node * new_root = new middle_node;
             this->updatekey();
 
-            new_root->insert(this->get_key(1),this);
+            new_root->insert(this->get_key(1), this);
             this->set_parent_node(new_root);
             
             (this->manager)->update_root(new_root);
@@ -288,13 +268,13 @@ namespace utils {
         }
 
         if(used_pairs >= 10) {
-            middle_node * new_middle_node = new middle_node;
+            middle_node * new_middle_node = nullptr;
             new_middle_node = _split_middle_node(this);
 
             std::string new_middle_node_maxkey = new_middle_node->get_key(1);
             std::string leaf_node1_maxkey = value->get_key(1);
 
-            if(new_middle_node_maxkey>= leaf_node1_maxkey) {
+            if(new_middle_node_maxkey >= leaf_node1_maxkey) {
                 new_middle_node->insert(value->get_key(1),value);
                 value->set_parent_node(new_middle_node);
             } else {
@@ -305,7 +285,7 @@ namespace utils {
             return 0;
         }
 
-        key_value_pair_for_middle_node_t.push_back(key_value_pair_for_middle_node(key, value));
+        kvpair_for_middle_node.push_back(key_value_pair_for_middle_node(key, value));
         value->set_parent_node(this);
 
         flag = 0;
@@ -323,7 +303,7 @@ namespace utils {
         if (flag == 0)
             return 1; //子节点不可同时存在既有叶子节点又有中间节点的情况
 
-        middle_node *new_middle_node = new middle_node;
+        middle_node *new_middle_node = nullptr;
         if (used_pairs >= 10) {
             //std::cout<<"middle node has full,the key is "<<key<<std::endl;
 
@@ -347,7 +327,7 @@ namespace utils {
 
             ///////////////下面的可能要剪掉
             value->set_parent(this);
-            key_value_pair_for_middle_node_which_next_node_is_leaf_node_t.push_back(
+            kvpair_for_midnode_which_nextnode_is_leafnode.push_back(
                     key_value_pair_for_middle_node_which_next_node_is_leaf_node(key, value));
             flag = 1;
 
@@ -362,13 +342,13 @@ namespace utils {
     middle_node::sort()
     {
         if(flag == 0) {
-            std::sort(key_value_pair_for_middle_node_t.begin(),
-                    key_value_pair_for_middle_node_t.end());
+            std::sort(kvpair_for_middle_node.begin(),
+                    kvpair_for_middle_node.end());
         }
 
         if(flag == 1)
-            std::sort(key_value_pair_for_middle_node_which_next_node_is_leaf_node_t.begin(),
-                    key_value_pair_for_middle_node_which_next_node_is_leaf_node_t.end());
+            std::sort(kvpair_for_midnode_which_nextnode_is_leafnode.begin(),
+                    kvpair_for_midnode_which_nextnode_is_leafnode.end());
     }
 
 
@@ -505,7 +485,7 @@ namespace utils {
     void
     _split_leaf_node(middle_node *parent_node,leaf_node *leaf_node1)
     {
-        leaf_node * new_leaf_node = new leaf_node();
+        leaf_node * new_leaf_node = new leaf_node;
         //parent_node->insert()
         //new_leaf_node->insert(key,value);
         for(int i = 0; i < 5; i++) {
@@ -520,7 +500,7 @@ namespace utils {
     middle_node *
     _split_middle_node(middle_node *middle_node1, leaf_node *leaf_node1)
     {
-        middle_node *new_middle_node = new middle_node();
+        auto new_middle_node = new middle_node;
 
         for (int i = 0; i < 5; i++) {
             new_middle_node->insert(middle_node1->get_key(),
@@ -537,7 +517,7 @@ namespace utils {
     middle_node *
     _split_middle_node(middle_node *middle_node1)
     {
-        middle_node * new_middle_node = new middle_node;
+        auto new_middle_node = new middle_node;
 
         for(int i = 0; i < 5; i++) {
             new_middle_node->insert(middle_node1->get_key(),
