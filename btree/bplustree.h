@@ -4,20 +4,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <stdint.h>
+#include <assert.h>
 
 #define M (4)
 #define LIMIT_M_2 (M % 2 ? (M + 1)/2 : M/2)
+// 下面是内存对齐大小,后面为了调优应该需要改动.
+#ifndef __ALIGN
+#define __ALIGN 8
+#endif
+
 
 typedef struct BPlusNode *BPlusTree,*Position;
 typedef int KeyType;
 typedef int ValueType;
 struct BPlusNode{
+    uint64_t id;
     int KeyNum;
     KeyType Key[M + 1];
     ValueType Value[M+1];
     BPlusTree Children[M + 1];
     BPlusTree Next;
-};
+}__attribute__((aligned(__ALIGN)));
 
 /* 初始化 */
 extern BPlusTree Initialize();
