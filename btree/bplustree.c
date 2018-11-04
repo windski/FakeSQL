@@ -2,6 +2,8 @@
 
 static KeyType Unavailable = INT_MIN;
 
+static uint64_t __initval = 0;
+
 /* 生成节点并初始化 */
 static BPlusTree MallocNewNode(){
     BPlusTree NewNode;
@@ -12,11 +14,15 @@ static BPlusTree MallocNewNode(){
     
     
     i = 0;
-    while (i < M + 1){
+    while (i < M + 1) {
         NewNode->Key[i] = Unavailable;
+        NewNode->Value[i] = Unavailable;
         NewNode->Children[i] = NULL;
         i++;
     }
+
+    __initval++;
+    NewNode->id = __initval;
     NewNode->Next = NULL;
     NewNode->KeyNum = 0;
     
@@ -30,7 +36,6 @@ extern BPlusTree Initialize(){
     if (M < (3)){
         printf("M最小等于3！");
         exit(EXIT_FAILURE);
-        
     }
     /* 根结点 */
     T = MallocNewNode();

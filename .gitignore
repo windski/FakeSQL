@@ -43,3 +43,7 @@ test.sql
 # Jetbrains
 .idea/
 cmake-build-debug/
+
+# vim
+*.swp
+
