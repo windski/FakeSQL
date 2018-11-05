@@ -45,5 +45,7 @@ extern ValueType SearchKey(BPlusTree T,KeyType key);
 extern void Travel(BPlusTree T);
 /* 遍历树叶节点的数据 */
 extern void TravelData(BPlusTree T);
+/* 将已经建立好的树的所有节点填入自己的`ID' */
+extern void FillTreeID(BPlusTree T);
 
 #endif /* BPlusTree_h */

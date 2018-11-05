@@ -2,7 +2,7 @@
 
 static KeyType Unavailable = INT_MIN;
 
-static uint64_t __initval = 0;
+static uint64_t __initIDval = 0;
 
 /* 生成节点并初始化 */
 static BPlusTree MallocNewNode(){
@@ -21,8 +21,6 @@ static BPlusTree MallocNewNode(){
         i++;
     }
 
-    __initval++;
-    NewNode->id = __initval;
     NewNode->Next = NULL;
     NewNode->KeyNum = 0;
     
@@ -90,7 +88,8 @@ static Position FindSibling(Position Parent,int i){
 }
 
 /* 查找兄弟节点，其关键字数大于M/2 ;没有返回NULL*/
-static Position FindSiblingKeyNum_M_2(Position Parent,int i,int *j){
+static Position FindSiblingKeyNum_M_2(Position Parent,int i,int *j)
+{
     int Limit;
     Position Sibling;
     Sibling = NULL;
@@ -122,8 +121,8 @@ static Position FindSiblingKeyNum_M_2(Position Parent,int i,int *j){
 /* 当要对X插入Key的时候，i是X在Parent的位置，j是Key要插入的位置
    当要对Parent插入X节点的时候，i是要插入的位置，Key和j的值没有用
  */
-static Position InsertElement(int isKey, Position Parent,Position X,KeyType Key,ValueType  value ,int i,int j){
-    
+static Position InsertElement(int isKey, Position Parent,Position X,KeyType Key,ValueType  value ,int i,int j)
+{
     int k;
     if (isKey) {
         /* 插入key */
@@ -174,8 +173,8 @@ static Position InsertElement(int isKey, Position Parent,Position X,KeyType Key,
 }
 
 
-static Position RemoveElement(int isKey, Position Parent,Position X,int i,int j){
-    
+static Position RemoveElement(int isKey, Position Parent,Position X,int i,int j)
+{
     int k,Limit;
     
     if (isKey){
@@ -189,7 +188,7 @@ static Position RemoveElement(int isKey, Position Parent,Position X,int i,int j)
         }
         
         X->Key[X->KeyNum - 1] = Unavailable;
-        X->Value[X->KeyNum-1] = Unavailable;
+        X->Value[X->KeyNum - 1] = Unavailable;
         Parent->Key[i] = X->Key[0];
         Parent->Value[i] = X->Value[0];
         X->KeyNum--;
@@ -489,12 +488,14 @@ static BPlusTree RecursiveRemove(BPlusTree T,KeyType Key,int i,BPlusTree Parent)
 }
 
 /* 删除 */
-extern BPlusTree Remove(BPlusTree T,KeyType Key){
+extern BPlusTree Remove(BPlusTree T,KeyType Key)
+{
     return RecursiveRemove(T, Key, 0, NULL);
 }
 
 /* 销毁 */
-extern BPlusTree Destroy(BPlusTree T){
+extern BPlusTree Destroy(BPlusTree T)
+{
     int i,j;
     if (T != NULL){
         i = 0;
@@ -514,7 +515,8 @@ extern BPlusTree Destroy(BPlusTree T){
     return T;
 }
 
-static void RecursiveTravel(BPlusTree T,int Level){
+static void RecursiveTravel(BPlusTree T,int Level)
+{
     int i;
     if (T != NULL) {
         printf("  ");
@@ -540,27 +542,25 @@ static void RecursiveTravel(BPlusTree T,int Level){
     }
 }
 
-ValueType SearchKey(BPlusTree T, KeyType key) {
+ValueType SearchKey(BPlusTree T, KeyType key)
+{
     Position Tmp;
     int i;
     Tmp = T;
-    while (Tmp->Children[0]!=NULL) {
 
-        for(i=Tmp->KeyNum-1;i>=0;i--)
-        {
-            if(key>=Tmp->Key[i])
-            {
-                Tmp=Tmp->Children[i];
+    while (Tmp->Children[0] != NULL) {
+        for(i = Tmp->KeyNum - 1; i >= 0; i--) {
+            if(key >= Tmp->Key[i]) {
+                Tmp = Tmp->Children[i];
                 break;
             }
         }
     }
-    if(Tmp->Children[0]==NULL)
-    {
-        int j=0;
-        for(j;j<Tmp->KeyNum;j++)
-        {
-            if(key==Tmp->Key[j])
+
+    if(Tmp->Children[0] == NULL) {
+        int j = 0;
+        for( ; j < Tmp->KeyNum; j++) {
+            if(key == Tmp->Key[j])
             {
                 printf("%d\n",Tmp->Value[j]);
                 return Tmp->Value[j];
@@ -570,10 +570,21 @@ ValueType SearchKey(BPlusTree T, KeyType key) {
         return -1;
     }
 
+    return -1;
 }
 
+/* fill it */
+void FillTreeID(BPlusTree T)
+{
+    if(T == NULL) {
+        return ;
+    }
 
-
+    for(int i = 0; i < M + 1; i++) {
+        T->id = __initIDval++;
+        return FillTreeID(T->Children[i]);
+    }
+}
 
 
 /* 遍历 */

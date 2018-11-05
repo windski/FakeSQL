@@ -1,6 +1,7 @@
+cmake_minimum_required(VERSION 2.6)
+project(bplustree)
 
 set(src bplustree.c bplustree.h
-    presist.c presist.h
     main.c)
 
 add_executable(bplustree ${src})
