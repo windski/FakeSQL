@@ -22,7 +22,7 @@ struct BPlusNode{
     uint64_t id;
     int KeyNum;
     KeyType Key[M + 1];
-    ValueType Value[M+1];
+    ValueType Value[M + 1];
     BPlusTree Children[M + 1];
     BPlusTree Next;
 }__attribute__((aligned(__ALIGN)));
