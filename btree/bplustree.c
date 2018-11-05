@@ -1,4 +1,5 @@
 #include "bplustree.h"
+#include "myque.h"
 
 static KeyType Unavailable = INT_MIN;
 
@@ -574,16 +575,38 @@ ValueType SearchKey(BPlusTree T, KeyType key)
 }
 
 /* fill it */
-void FillTreeID(BPlusTree T)
+void FillTreeID_recur(BPlusTree T)
 {
     if(T == NULL) {
         return ;
     }
 
+    T->id = __initIDval++;
     for(int i = 0; i < M + 1; i++) {
-        T->id = __initIDval++;
-        return FillTreeID(T->Children[i]);
+        FillTreeID(T->Children[i]);
     }
+}
+
+/* fill it! by queue */
+void FillTreeID(BPlusTree T)
+{
+    myque_t *que = myque_init();
+
+    myque_append(que, T);
+    while(!myque_isempty(que)) {
+        BPlusTree tmp = myque_top(que);
+        myque_pop(que);
+
+        tmp->id = __initIDval++;
+        for(int i = 0; i < M + 1; i++) {
+            if(tmp->Children[i] == NULL) {
+                continue;
+            }
+            myque_append(que, tmp->Children[i]);
+        }
+    }
+
+    myque_destory(que);
 }
 
 

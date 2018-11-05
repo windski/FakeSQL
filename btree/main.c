@@ -19,12 +19,12 @@ int main(int argc, const char * argv[]) {
         SearchKey(T,i);
     }
 
-    
+
     Travel(T);
     Destroy(T);
-    
+
     clock_t c2 = clock();
-    
+
     /* closefile(fd); */
     printf("\n用时： %lu秒\n",(c2 - c1)/CLOCKS_PER_SEC);
 }
