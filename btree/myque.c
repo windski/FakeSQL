@@ -41,6 +41,7 @@ int myque_append(myque_t *que, myque_data_t data_)
     return 0;
 }
 
+//这一段写的真香,借走了嘿嘿嘿
 
 int myque_pop(myque_t *que)
 {
@@ -53,7 +54,6 @@ int myque_pop(myque_t *que)
 
     return 0;
 }
-
 
 myque_data_t myque_top(myque_t *que)
 {

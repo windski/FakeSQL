@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "bplustree.h"
+#include "presistBtree.h"
 
 int main(int argc, const char * argv[]) {
     int i;
@@ -9,15 +10,16 @@ int main(int argc, const char * argv[]) {
     
     clock_t c1 = clock();
     i = 100;
-    for(i = 0;i < 1534; i++) {
+    for(i = 0;i < 200; i++) {
         T = Insert(T, i, i);
     }
-    FillTreeID(T);
+    FillTreeID_recur(T);
+    //PersistBtree(T);
+//    for(i = 200; i > 0; i--)
+//    {
+//        SearchKey(T,i);
+//    }
 
-    for(i = 1534; i > 0; i--)
-    {
-        SearchKey(T,i);
-    }
 
 
     Travel(T);

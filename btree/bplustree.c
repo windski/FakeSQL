@@ -610,6 +610,8 @@ void FillTreeID(BPlusTree T)
 }
 
 
+
+
 /* 遍历 */
 extern void Travel(BPlusTree T){
     RecursiveTravel(T, 0);
@@ -630,7 +632,10 @@ extern void TravelData(BPlusTree T){
     while (Tmp != NULL){
         i = 0;
         while (i < Tmp->KeyNum)
-            printf(" %d",Tmp->Key[i++]);
+        {
+            printf(" %d\n",Tmp->Key[i++]);
+
+        }
         Tmp = Tmp->Next;
     }
 }

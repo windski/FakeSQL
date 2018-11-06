@@ -28,7 +28,6 @@ struct BPlusNode{
 }__attribute__((aligned(__ALIGN)));
 
 
-
 /* 初始化 */
 extern BPlusTree Initialize();
 /* 插入 */
@@ -43,6 +42,8 @@ extern BPlusTree Destroy(BPlusTree T);
 extern ValueType SearchKey(BPlusTree T,KeyType key);
 /* 遍历节点 */
 extern void Travel(BPlusTree T);
+
+
 /* 遍历树叶节点的数据 */
 extern void TravelData(BPlusTree T);
 /* 将已经建立好的树的所有节点填入自己的`ID' */
