@@ -35,7 +35,7 @@ static BPlusTree MallocNewNode()
 /* 初始化 */
 extern BPlusTree Initialize(){
     
-    BPlusTree T;    
+    BPlusTree T;
     if (M < (3)){
         printf("M最小等于3！");
         exit(EXIT_FAILURE);
@@ -46,7 +46,8 @@ extern BPlusTree Initialize(){
     return T;
 }
 
-static Position FindMostLeft(Position P){
+static Position FindMostLeft(Position P)
+{
     Position Tmp;
     
     Tmp = P;
@@ -584,6 +585,8 @@ ValueType SearchKey(BPlusTree T, KeyType key)
     return -1;
 }
 
+
+// 递归填入ID, 是一种深度优先遍历
 /* fill it */
 void FillTreeID_recur(BPlusTree T)
 {
@@ -593,10 +596,12 @@ void FillTreeID_recur(BPlusTree T)
 
     T->id = __initIDval++;
     for(int i = 0; i < M + 1; i++) {
-        FillTreeID(T->Children[i]);
+        FillTreeID_recur(T->Children[i]);
     }
 }
 
+
+// 使用队列填入ID, 实际是一种广度优先遍历
 /* fill it! by queue */
 void FillTreeID(BPlusTree T)
 {

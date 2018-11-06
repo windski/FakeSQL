@@ -17,16 +17,22 @@
 #endif
 
 
-typedef struct BPlusNode *BPlusTree,*Position;
+typedef struct BPlusNode *BPlusTree, *Position;
+
 typedef int KeyType;
 typedef int ValueType;
-struct BPlusNode{
+
+
+struct BPlusNode {
     uint64_t id;
     int KeyNum;
+
     KeyType Key[M + 1];
     ValueType Value[M + 1];
+
     BPlusTree Children[M + 1];
     BPlusTree Next;
+
     pthread_rwlock_t rwlock;
 }__attribute__((aligned(__ALIGN)));
 

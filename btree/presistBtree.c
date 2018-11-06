@@ -112,7 +112,9 @@ bfpqueue_t * BFPqueue_init()
 //    return que->head_ == que->tail_;
 //}
 
+
+// 其实这里是有问题的, 我给你一改
 //bool myque_isfull(bfpqueue_t *que)
 //{
-//    return que->tail_ == __BFPQUEUE_SIZE - 1 + que->head_;
+//    return que->head_ == (que->tail_ + 1) % __BFPQUEUE_SIZE;
 //}

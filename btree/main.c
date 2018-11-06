@@ -14,12 +14,15 @@ int main(int argc, const char * argv[])
     for(i = 0;i < 15346; i++) {
         T = Insert(T, i, i);
     }
-    FillTreeID_recur(T);
+
+    FillTreeID(T);
+
     //PersistBtree(T);
-//    for(i = 200; i > 0; i--)
-//    {
-//        SearchKey(T,i);
-//    }
+
+    for(i = 200; i > 0; i--)
+    {
+        SearchKey(T,i);
+    }
 
     Travel(T);
     Destroy(T);
