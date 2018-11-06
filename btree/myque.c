@@ -67,5 +67,5 @@ bool myque_isempty(myque_t *que)
 
 bool myque_isfull(myque_t *que)
 {
-    return que->tail_ == __QUE_SIZE - 1 + que->head_;
+    return que->head_ == (que->tail_ + 1) % __QUE_SIZE;
 }

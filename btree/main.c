@@ -2,19 +2,20 @@
 #include <time.h>
 #include "bplustree.h"
 
-int main(int argc, const char * argv[]) {
+int main(int argc, const char * argv[])
+{
     int i;
     BPlusTree T;
     T = Initialize();
     
     clock_t c1 = clock();
     i = 100;
-    for(i = 0;i < 1534; i++) {
+    for(i = 0;i < 15346; i++) {
         T = Insert(T, i, i);
     }
     FillTreeID(T);
 
-    for(i = 1534; i > 0; i--)
+    for(i = 15346; i > 0; i--)
     {
         SearchKey(T,i);
     }
@@ -25,6 +26,7 @@ int main(int argc, const char * argv[]) {
 
     clock_t c2 = clock();
 
-    /* closefile(fd); */
     printf("\n用时： %lu秒\n",(c2 - c1)/CLOCKS_PER_SEC);
+
+    return 0;
 }

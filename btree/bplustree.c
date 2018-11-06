@@ -6,15 +6,18 @@ static KeyType Unavailable = INT_MIN;
 static uint64_t __initIDval = 0;
 
 /* 生成节点并初始化 */
-static BPlusTree MallocNewNode(){
+static BPlusTree MallocNewNode()
+{
     BPlusTree NewNode;
     int i;
     NewNode = malloc(sizeof(struct BPlusNode));
     if (NewNode == NULL)
         exit(EXIT_FAILURE);
     
-    
+    pthread_rwlock_init(&NewNode->rwlock, NULL);
     i = 0;
+
+    pthread_rwlock_wrlock(&NewNode->rwlock);
     while (i < M + 1) {
         NewNode->Key[i] = Unavailable;
         NewNode->Value[i] = Unavailable;
@@ -24,7 +27,8 @@ static BPlusTree MallocNewNode(){
 
     NewNode->Next = NULL;
     NewNode->KeyNum = 0;
-    
+
+    pthread_rwlock_unlock(&NewNode->rwlock);
     return NewNode;
 }
 
@@ -498,17 +502,23 @@ extern BPlusTree Remove(BPlusTree T,KeyType Key)
 extern BPlusTree Destroy(BPlusTree T)
 {
     int i,j;
-    if (T != NULL){
+    if (T != NULL) {
         i = 0;
-        while (i < T->KeyNum + 1){
-            Destroy(T->Children[i]);i++;
+        while (i < T->KeyNum + 1) {
+            Destroy(T->Children[i]);
+            i++;
         }
-        
+
         printf("Destroy:(");
         j = 0;
-        while (j < T->KeyNum)/*  T->Key[i] != Unavailable*/
+        while (j < T->KeyNum) {
+            /*  T->Key[i] != Unavailable*/
             printf("%d:",T->Key[j++]);
+        }
+
         printf(") ");
+        pthread_rwlock_destroy(&(T->rwlock));
+
         free(T);
         T = NULL;
     }
@@ -602,7 +612,11 @@ void FillTreeID(BPlusTree T)
             if(tmp->Children[i] == NULL) {
                 continue;
             }
-            myque_append(que, tmp->Children[i]);
+
+            if(myque_append(que, tmp->Children[i]) == -1) {
+                printf("queue is not long enough.\n");
+                exit(-1);
+            }
         }
     }
 

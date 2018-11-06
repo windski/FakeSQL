@@ -7,6 +7,8 @@
 #include <stdint.h>
 #include <assert.h>
 
+#include <pthread.h>
+
 #define M (10)
 #define LIMIT_M_2 (M % 2 ? (M + 1)/2 : M/2)
 // 下面是内存对齐大小,后面为了调优应该需要改动.
@@ -25,6 +27,7 @@ struct BPlusNode{
     ValueType Value[M + 1];
     BPlusTree Children[M + 1];
     BPlusTree Next;
+    pthread_rwlock_t rwlock;
 }__attribute__((aligned(__ALIGN)));
 
 
