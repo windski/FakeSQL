@@ -36,5 +36,8 @@ extern bfpqueue_t * BFPqueue_init();
 
 extern void PersistBtree(const BPlusTree Root);
 
+extern int WriteBFPqueToFile(char * filename,bfpqueue_t * bfPqueue,int size);
+
+
 
 #endif //BPLUSTREE_PRESISTBTREE_H

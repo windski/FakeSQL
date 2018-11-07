@@ -8,7 +8,7 @@ find_package(Threads)
 set(src main.c
         bplustree.c bplustree.h
         myque.c myque.h
-        presistBtree.c presistBtree.h)
+        presistBtree.c presistBtree.h restorefromfile.h resotrefromfile.c)
 
 add_executable(bplustree ${src})
 
