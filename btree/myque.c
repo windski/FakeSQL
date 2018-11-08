@@ -12,9 +12,16 @@ myque_t *myque_init()
     myque_t *data = (myque_t *)malloc(sizeof(myque_t));
     assert(data != NULL);
 
+//    pthread_spin_init(&data->spinlock, 0);
+    pthread_mutex_init(&data->mutex, 0);
+
+//    pthread_spin_lock(&data->spinlock);
+    pthread_mutex_lock(&data->mutex);
     data->head_ = data->tail_ = 0;
     data->size_ = 0;
 
+//    pthread_spin_unlock(&data->spinlock);
+    pthread_mutex_unlock(&data->mutex);
     return data;
 }
 
@@ -23,7 +30,9 @@ void myque_destory(myque_t *data)
 {
     assert(data != NULL);
     assert(data->data != NULL);
+//    pthread_spin_destroy(&data->spinlock);
 
+    pthread_mutex_destroy(&data->mutex);
     free(data);
 }
 
@@ -34,10 +43,14 @@ int myque_append(myque_t *que, myque_data_t data_)
         return -1;
     }
 
+//    pthread_spin_lock(&que->spinlock);
+    pthread_mutex_lock(&que->mutex);
     que->size_++;
     que->data[que->tail_] = data_;
     que->tail_ = (que->tail_ + 1) % __QUE_SIZE;
 
+//    pthread_spin_unlock(&que->spinlock);
+    pthread_mutex_unlock(&que->mutex);
     return 0;
 }
 
@@ -49,9 +62,13 @@ int myque_pop(myque_t *que)
         return -1;
     }
 
+//    pthread_spin_lock(&que->spinlock);
+    pthread_mutex_lock(&que->mutex);
     que->size_--;
     que->head_ = (que->head_ + 1) % __QUE_SIZE;
 
+//    pthread_spin_unlock(&que->spinlock);
+    pthread_mutex_unlock(&que->mutex);
     return 0;
 }
 

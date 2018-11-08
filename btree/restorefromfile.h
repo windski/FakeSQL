@@ -14,6 +14,6 @@ BPlusTree Restore(char * filename);
 /*从bfpqueue中rebuildBtree*/
 int rebuildBtree(BPlusTree T,BFP bfp);
 
-int rebuildNode()
+int rebuildNode();
 
 #endif //BPLUSTREE_RESTOREFROMFILE_H
