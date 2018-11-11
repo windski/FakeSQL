@@ -128,7 +128,7 @@ int WriteBFPqueToFile(char *filename, bfpqueue_t *bfPqueue,int size) {
         //return -1;
     write(fd,bfPqueue->data,200*size);
     printf("write completed\n ");
-    //close(fd);
+    close(fd);
     return 0;
 }
 

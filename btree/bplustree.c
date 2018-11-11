@@ -510,14 +510,15 @@ extern BPlusTree Destroy(BPlusTree T)
             i++;
         }
 
-        printf("Destroy:(");
+        //printf("Destroy:(");
         j = 0;
         while (j < T->KeyNum) {
             /*  T->Key[i] != Unavailable*/
-            printf("%d:",T->Key[j++]);
+            //printf("%d:",T->Key[j++]);
+            T->Key[j++];
         }
 
-        printf(") ");
+        //printf(") ");
         pthread_rwlock_destroy(&(T->rwlock));
 
         free(T);

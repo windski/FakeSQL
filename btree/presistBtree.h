@@ -5,7 +5,7 @@
 #ifndef BPLUSTREE_PRESISTBTREE_H
 #define BPLUSTREE_PRESISTBTREE_H
 
-#define  __BFPQUEUE_SIZE 100
+#define  __BFPQUEUE_SIZE 8000000
 
 #include "bplustree.h"
 typedef struct BPlusNode_for_Persist BFP;

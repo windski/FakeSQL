@@ -25,9 +25,13 @@ BPlusTree Restore(char *filename) {
     while(1)
     {
         result =pread(fd,bfpqueue,200*__BFPQUEUE_SIZE,offset);
-        printf("%d\n",result);
-        bfpqueue->size_ =__BFPQUEUE_SIZE;
-
+        //printf("%d\n",result);
+        //bfpqueue->size_ =__BFPQUEUE_SIZE;
+        //printf("size %d",bfpqueue->size_);
+        for(int i=0;i<bfpqueue->size_;i++)
+        {
+            printf("%d\n",bfpqueue->data[i].id);
+        }
         //
         //
         //
@@ -36,15 +40,22 @@ BPlusTree Restore(char *filename) {
         {
             int result2 =pread(fd,bfpqueue,result,offset);
             bfpqueue->size_=result/200;
-            //
-            //
-            //
-            //printf("error\n");
-            //printf("%s",strerror(errno));
+            printf("size : %d",bfpqueue->size_);
+
+
+//            for(int i=0;i<bfpqueue->size_;i++)
+//            {
+//                printf("%d\n",bfpqueue->data[i].id);
+//            }
+
+
+
+
             break;
         }
         offset+=200*__BFPQUEUE_SIZE;
     }
+
     int a;
 }
 
@@ -56,9 +67,15 @@ int rebuildBtree(BPlusTree T, BFP bfp) {
     {
         T->Key[i] = bfp.Key_[i];
         T->Value[i] = bfp.Value_[i];
-        T->Children[i]
+        T->Children[i ];
     }
 
 
     return 0;
+}
+
+int RecursionRebuild(BPlusTree Root, BFP bfp) {
+
+    
+
 }

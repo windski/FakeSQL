@@ -9,7 +9,7 @@
 
 #include <stdbool.h>
 
-#define __QUE_SIZE 204800
+#define __QUE_SIZE 20480000
 typedef struct BPlusNode * myque_data_t;
 
 typedef struct myque {
