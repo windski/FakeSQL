@@ -6,10 +6,11 @@
 #define MYQUE_H_
 
 #include "bplustree.h"
-
+#include <pthread.h>
 #include <stdbool.h>
 
 #define __QUE_SIZE 20480000
+
 typedef struct BPlusNode * myque_data_t;
 
 typedef struct myque {
@@ -17,6 +18,10 @@ typedef struct myque {
     int head_;
     int tail_;
     int size_;
+
+    // threading support
+//    pthread_spinlock_t spinlock;
+    pthread_mutex_t mutex;
 } myque_t;
 
 extern myque_t *myque_init();

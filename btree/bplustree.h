@@ -33,7 +33,7 @@ struct BPlusNode {
     BPlusTree Children[M + 1];
     BPlusTree Next;
 
-    pthread_rwlock_t rwlock;
+    pthread_rwlock_t *rwlock;
 }__attribute__((aligned(__ALIGN)));
 
 

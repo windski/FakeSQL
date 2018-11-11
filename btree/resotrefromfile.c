@@ -15,9 +15,16 @@ BPlusTree Restore(char *filename) {
     if(fd == -1){
         printf("%s  ",strerror(errno));
         printf("openFailed\n");
-        return -1;
+
+        // 这里你没发现警告吗? 返回值的类型应该一样啊.最起码给你NULL???
+        // 想要错误返回通知调用函数, 你可以在你的头文件里定义 全局变量就好了
+        // TODO: fix it!!
+//        return -1;
     }
 
+
+    // WARNING!! 你准备在哪析构??
+    // TODO: FIX IT!!
     bfpqueue_t * bfpqueue = (bfpqueue_t*)malloc(sizeof(bfpqueue_t));
 
     int result=0;
@@ -59,15 +66,21 @@ BPlusTree Restore(char *filename) {
     int a;
 }
 
-int rebuildBtree(BPlusTree T, BFP bfp) {
+int  rebuildBtree(BPlusTree T,bfpqueue_t *bfpqueue,int i) {
 
-    T->id=bfp.id;
-    T->KeyNum=bfp.KeyNum_;
-    for(int i=0;i<bfp.KeyNum_;i++)
+    T->id=bfpqueue->data[i].id;
+    T->KeyNum=bfpqueue->data[i].KeyNum_;
+    for(int i=0;i<T->KeyNum;i++)
     {
-        T->Key[i] = bfp.Key_[i];
-        T->Value[i] = bfp.Value_[i];
-        T->Children[i ];
+        T->Key[i] = bfpqueue->data[i].Key_[i];
+        T->Value[i] = bfpqueue->data[i].Value_[i];
+        if(bfpqueue->data[i].ChildLists_[i])
+        {
+            BPlusTree ChildNode = (BPlusTree)malloc(sizeof(struct BPlusNode));
+            rebuildBtree(ChildNode,bfpqueue,bfpqueue->data[i].ChildLists_[i]);
+            T->Children[i]=ChildNode;
+        } else
+            return 0;
     }
 
 

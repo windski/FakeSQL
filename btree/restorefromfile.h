@@ -12,10 +12,11 @@
 BPlusTree Restore(char * filename);
 
 /*从bfpqueue中rebuildBtree*/
-int rebuildBtree(BPlusTree T,BFP bfp);
+int  rebuildBtree(BPlusTree T,bfpqueue_t * bfpqueue,int i);
 
 int rebuildNode();
 
 int RecursionRebuild(BPlusTree Root,BFP bfp);
+
 
 #endif //BPLUSTREE_RESTOREFROMFILE_H
