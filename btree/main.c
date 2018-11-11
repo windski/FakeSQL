@@ -43,24 +43,26 @@ void thread_test_case(void)
 int main(int argc, const char * argv[])
 {
 
-//    Restore("./btree.db");
-    int i;
-    BPlusTree T;
-    T = Initialize();
-
-    //i = 100;
-    for(i = 0;i < 64000; i++) {
-        T = Insert(T, i, i);
-    }
-
-    FillTreeID(T);
-
-    PersistBtree(T);
-
-////    for(i = 200; i > 0; i--)
-////    {
-////        SearchKey(T,i);
-////    }
+    clock_t c1 = clock();
+    BPlusTree T ;
+    T = Restore("./btree.db",T);
+//    int i;
+//    BPlusTree  T = Initialize();
+//
+//    //i = 100;
+//    for(i = 0;i < 64000000; i++) {
+//        T = Insert(T, i, i);
+//    }
+//
+//    FillTreeID(T);
+//
+//    clock_t c1 = clock();
+//    PersistBtree(T);
+    clock_t c2 = clock();
+//    for(int i = 64000; i > 0; i--)
+//    {
+//        SearchKey(T,i);
+//    }
 //
 //    for(i = 200; i > 0; i--)
 //    {
@@ -68,15 +70,15 @@ int main(int argc, const char * argv[])
 //    }
 
 //    Travel(T);
-    clock_t c1 = clock();
 
+//
     Destroy(T);
-
-
-    clock_t c2 = clock();
-
+//
+//
+//    clock_t c2 = clock();
+//
     printf("\n用时： %lu秒\n",(c2 - c1)/CLOCKS_PER_SEC);
 
-    thread_test_case();
+    //thread_test_case();
     return 0;
 }

@@ -9,7 +9,7 @@
 #include "presistBtree.h"
 
 /*用来restore的函数, 会调用rebuildBtree这个函数*/
-BPlusTree Restore(char * filename);
+BPlusTree Restore(char * filename,BPlusTree Root);
 
 /*从bfpqueue中rebuildBtree*/
 int  rebuildBtree(BPlusTree T,bfpqueue_t * bfpqueue,int i);

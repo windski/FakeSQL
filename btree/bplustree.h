@@ -9,7 +9,7 @@
 
 #include <pthread.h>
 
-#define M (10)
+#define M (20)
 #define LIMIT_M_2 (M % 2 ? (M + 1)/2 : M/2)
 // 下面是内存对齐大小,后面为了调优应该需要改动.
 #ifndef __ALIGN

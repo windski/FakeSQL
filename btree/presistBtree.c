@@ -34,6 +34,7 @@ void NodeBuffer(struct BFPqueue * bfPqueue_, const BPlusTree T) {
 
         }
         {
+            bfPqueue_->data[bfPqueue_->tail_].KeyNum_ = keyNum;
             bfPqueue_->data[bfPqueue_->tail_].id=T->id;
             //bfPqueue_[bfPqueue_->tail_].data->id=T->id;
             for(int i=0;i<keyNum;i++)
@@ -44,15 +45,19 @@ void NodeBuffer(struct BFPqueue * bfPqueue_, const BPlusTree T) {
                     bfPqueue_->data[bfPqueue_->tail_].Next_ = T->Next->id;
                 else
                     bfPqueue_->data[bfPqueue_->tail_].Next_ = UINT64_MAX;
+
                 if(T->Children[i]!=NULL)
                     bfPqueue_->data[bfPqueue_->tail_].ChildLists_[i] = T->Children[i]->id;
+                else
+                    bfPqueue_->data[bfPqueue_->tail_].ChildLists_[i] = UINT64_MAX;
             }
+
 
             //printf("id:%d\n",T->id);
             //printf("sizeof %d ",sizeof(bfPqueue_->data[bfPqueue_->tail_]));
             //printf("%d",sizeof(bfPqueue_->data));
             bfPqueue_->size_++;
-            printf("%d\n",bfPqueue_->size_);
+            //printf("%d\n",bfPqueue_->size_);
             bfPqueue_->tail_++;//= (bfPqueue_->tail_+1) % __BFPQUEUE_SIZE;
 
         }
@@ -93,7 +98,7 @@ void PersistBtree(const BPlusTree Root) {
         }
     }
     WriteBFPqueToFile("btree.db",bfPqueue,bfPqueue->size_);
-
+    free(bfPqueue);
     myque_destory(que);
 
 }
