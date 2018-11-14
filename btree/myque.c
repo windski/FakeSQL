@@ -58,7 +58,7 @@ int myque_append(myque_t *que, myque_data_t data_)
 
 int myque_pop(myque_t *que)
 {
-    if(myque_isfull(que)) {
+    if(myque_isempty(que)) {
         return -1;
     }
 

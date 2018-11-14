@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 project(bplustree)
 
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fno-omit-frame-pointer -g -rdynamic")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fno-omit-frame-pointer -g -rdynamic -pthread")
 
 find_package(Threads)
 

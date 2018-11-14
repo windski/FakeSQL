@@ -14,10 +14,10 @@ static BPlusTree MallocNewNode()
     if (NewNode == NULL)
         exit(EXIT_FAILURE);
     
-    //pthread_rwlock_init(NewNode->rwlock, NULL);
+    pthread_rwlock_init(&NewNode->rwlock, NULL);
     i = 0;
 
-//    pthread_rwlock_wrlock(NewNode->rwlock);
+    pthread_rwlock_wrlock(&NewNode->rwlock);
     while (i < M + 1) {
         NewNode->Key[i] = Unavailable;
         NewNode->Value[i] = Unavailable;
@@ -28,7 +28,7 @@ static BPlusTree MallocNewNode()
     NewNode->Next = NULL;
     NewNode->KeyNum = 0;
 
-    //pthread_rwlock_unlock(NewNode->rwlock);
+    pthread_rwlock_unlock(&NewNode->rwlock);
     return NewNode;
 }
 
@@ -502,7 +502,7 @@ extern BPlusTree Remove(BPlusTree T,KeyType Key)
 /* 销毁 */
 extern BPlusTree Destroy(BPlusTree T)
 {
-    int i,j;
+    int i;
     if (T != NULL) {
         i = 0;
         while (i < T->KeyNum + 1) {
@@ -510,18 +510,7 @@ extern BPlusTree Destroy(BPlusTree T)
             i++;
         }
 
-        //printf("Destroy:(");
-        j = 0;
-        while (j < T->KeyNum) {
-            /*  T->Key[i] != Unavailable*/
-            //printf("%d:",T->Key[j++]);
-            T->Key[j++];
-        }
-
-        //printf(") ");
-        pthread_rwlock_destroy(&(T->rwlock));
-        //printf(") ");
-        pthread_rwlock_destroy((T->rwlock));
+        pthread_rwlock_destroy(&T->rwlock);
 
         free(T);
         T = NULL;
