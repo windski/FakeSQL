@@ -27,11 +27,17 @@ struct tree_node {
     off_t next_leaf_;
 };
 
+inline bool is_leaf(struct tree_node &node)
+{
+    return node.leaf_flag_;
+}
+
 class BplusTree
 {
 private:
     off_t root_p;
     off_t cur_offset;
+    off_t file_size;
     std::list<off_t> free_list;
     int tree_fd;
     std::shared_ptr<struct tree_node *> cur_node, cur_parent;
@@ -40,8 +46,11 @@ private:
     struct tree_node *alloc_node(int parnet);
     int destroy_node(struct tree_node *node);
 
-    void recurs_insert(int key, char *value);
-    void key_insert(int key, char *value, off_t parnet);
+    struct tree_node get_root(void) const;
+
+    // The function will load the structure of node to `cur_node'
+    // may set the `cur_parent'?
+    int seek_node(off_t node);
 public:
     explicit BplusTree();
     ~BplusTree();

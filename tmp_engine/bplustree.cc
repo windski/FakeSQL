@@ -63,44 +63,39 @@ static const int _UNAVALIABLE = -1;
         return root;
     }
 
+    struct tree_node
+    BplusTree::get_root(void) const
+    {
+        struct tree_node tmp;
+        int size;
+        if((size = pread(tree_fd, &tmp, 1, root_p)) < 0) {
+            perror("get root node failed");
+            exit(-1);
+        }
+
+        return tmp;
+    }
 
     void
     BplusTree::insert(int key, char *value)
     {
         assert(cur_offset != 0);
-        recurs_insert(key, value);
-    }
 
-
-    void
-    BplusTree::recurs_insert(int key, char *value)
-    {
-        int i = 0;
-        while (i < _CHILDREN_NUMS && key >= (*cur_node)->keys_[i]) {
-            if (key == (*cur_node)->keys_[i]) {
-                // 重复, 直接返回
-                return ;
-            }
-
-            i++;
-        }
-
-        if ((*cur_node)->leaf_flag_) {
-            key_insert(key, value, (*cur_node)->self_);
-
-            // TODO: 判断root是否改变, 改变需要重新决定b+tree的根.
+        struct tree_node node = get_root();
+        if(is_leaf(node)) {
+            // TODO: Just insert into the leaf node if it not full...
         }
     }
 
 
-    void
-    BplusTree::key_insert(int key, char *value, off_t parent)
+    int
+    BplusTree::seek_node(off_t node)
     {
-        int k = (*cur_node)->keynum_;
-        // TODO:
+        cur_node = std::make_shared<struct tree_node *>(new struct tree_node);
+
+
+        return 0;
     }
-
-
 
 } // end of bplustree
 
