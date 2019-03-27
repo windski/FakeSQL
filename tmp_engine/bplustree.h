@@ -14,15 +14,19 @@
 namespace bplustree {
 
 static const int _CHILDREN_NUMS = 100;
+static const int _NO_PARENT = -1;
+static const int _UNAVALIABLE = -1;
 
 
 struct tree_node {
+    explicit tree_node(off_t parent);
+
     bool leaf_flag_;
     off_t self_;
     off_t parent_;
     int keynum_;
     int keys_[_CHILDREN_NUMS - 1];
-    char values_[_CHILDREN_NUMS][32];
+    char **values_;
     off_t children_[_CHILDREN_NUMS];
     off_t next_leaf_;
 };
@@ -40,11 +44,9 @@ private:
     off_t file_size;
     std::list<off_t> free_list;
     int tree_fd;
-    std::shared_ptr<struct tree_node *> cur_node, cur_parent;
+    struct tree_node cur_node, cur_parent, root;
 
-    off_t create_root();
-    struct tree_node *alloc_node(int parnet);
-    int destroy_node(struct tree_node *node);
+    off_t create_root() noexcept;
 
     struct tree_node get_root(void) const;
 
@@ -55,7 +57,7 @@ public:
     explicit BplusTree();
     ~BplusTree();
     void insert(int key, char *value);
-    int search(int ) const;
+    int search(const int ) const noexcept;
 
 };
 

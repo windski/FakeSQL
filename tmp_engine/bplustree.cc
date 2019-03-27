@@ -10,14 +10,29 @@
 
 namespace bplustree {
 
-static const int _NO_PARENT = -1;
-static const int _UNAVALIABLE = -1;
+    tree_node::tree_node(off_t parent) :
+            leaf_flag_(false), parent_(parent),
+            next_leaf_(-1), values_(nullptr),
+            keynum_(0)
+    {
+        for(auto &i : keys_) {
+            i = _UNAVALIABLE;
+        }
+
+        for(auto &i : children_) {
+            i = _UNAVALIABLE;
+        }
+    }
+
 
     BplusTree::BplusTree()
-        : root_p(0), free_list(), cur_parent(nullptr)
+        : root_p(0), free_list(), cur_parent(-1),
+        cur_node(-1), root(-1)
     {
-        tree_fd = ::open("index.db", O_CREAT | O_RDWR, 0644);
+        tree_fd = ::open("./index.db", O_CREAT | O_RDWR, 0644);
         cur_offset = create_root();
+        // storage the root_node offset.
+        root_p = cur_offset;
     }
 
     BplusTree::~BplusTree()
@@ -26,11 +41,12 @@ static const int _UNAVALIABLE = -1;
     }
 
     off_t
-    BplusTree::create_root()
+    BplusTree::create_root() noexcept
     {
-        cur_node = std::make_shared<struct tree_node *>(alloc_node(_NO_PARENT));
+        assert(&root);
+
         static char buff[sizeof(struct tree_node) + 1];
-        memcpy(buff, cur_node.get(), sizeof(struct tree_node));
+        memcpy(buff, &root, sizeof(struct tree_node));
 
         if (write(tree_fd, buff, sizeof(struct tree_node)) < 0) {
             perror("tree node create failed");
@@ -38,48 +54,30 @@ static const int _UNAVALIABLE = -1;
         }
 
         off_t self_offt = ftello(conv2file_p(tree_fd));
-        (*cur_node)->self_ = self_offt;
-        (*cur_node)->leaf_flag_ = true;
+        root.self_ = self_offt;
+        root.leaf_flag_ = true;
 
         return self_offt;
-    }
-
-    struct tree_node *
-    BplusTree::alloc_node(int parent)
-    {
-        struct tree_node *root = new struct tree_node;
-        root->leaf_flag_ = false;
-        root->parent_ = parent;
-        root->next_leaf_ = -1;
-
-        for (int i = 0; i < _CHILDREN_NUMS - 1; i++) {
-            root->keys_[i] = _UNAVALIABLE;
-        }
-
-        for (int i = 0; i < _CHILDREN_NUMS; i++) {
-            root->children_[i] = _UNAVALIABLE;
-        }
-
-        return root;
     }
 
     struct tree_node
     BplusTree::get_root(void) const
     {
-        struct tree_node tmp;
-        int size;
-        if((size = pread(tree_fd, &tmp, 1, root_p)) < 0) {
-            perror("get root node failed");
-            exit(-1);
-        }
+//        struct tree_node tmp(-1);
+//        ssize_t size;
+//        if((size = pread(tree_fd, &tmp, 1, root_p)) < 0) {
+//            perror("get root node failed");
+//            exit(-1);
+//        }
 
-        return tmp;
+        return root;
     }
 
     void
     BplusTree::insert(int key, char *value)
     {
         assert(cur_offset != 0);
+        assert(value != nullptr);
 
         struct tree_node node = get_root();
         if(is_leaf(node)) {
@@ -91,10 +89,21 @@ static const int _UNAVALIABLE = -1;
     int
     BplusTree::seek_node(off_t node)
     {
-        cur_node = std::make_shared<struct tree_node *>(new struct tree_node);
+        assert(&cur_node);
 
+        ssize_t size;
+        if((size = pread(tree_fd, &cur_node, 1, node)) < 0) {
+            perror("seek node failure");
+            return -1;
+        }
 
         return 0;
+    }
+
+    int
+    BplusTree::search(const int key) const noexcept
+    {
+
     }
 
 } // end of bplustree
